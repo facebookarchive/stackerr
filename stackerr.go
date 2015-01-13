@@ -81,6 +81,10 @@ type hasUnderlying interface {
 // Underlying returns all the underlying errors by iteratively checking if the
 // error has an Underlying error. If e is nil, the returned slice will be nil.
 func Underlying(e error) []error {
+	if e == nil {
+		return nil
+	}
+
 	var errs []error
 	for {
 		if e == nil {
@@ -94,4 +98,33 @@ func Underlying(e error) []error {
 			e = nil
 		}
 	}
+}
+
+// Matcher defines the interface to check if an error matches an expectation.
+type Matcher interface {
+	Match(e error) bool
+}
+
+type equals struct {
+	error error
+}
+
+func (e *equals) Match(other error) bool {
+	return e.error == other
+}
+
+// Equals returns a Matcher to check if an error equals the given error.
+func Equals(e error) Matcher {
+	return &equals{e}
+}
+
+// HasUnderlying returns true if any of the underlying errors satisfy the given
+// Matcher.
+func HasUnderlying(e error, m Matcher) bool {
+	for _, o := range Underlying(e) {
+		if m.Match(o) {
+			return true
+		}
+	}
+	return false
 }
