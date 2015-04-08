@@ -15,7 +15,7 @@ func TestNew(t *testing.T) {
 	e := stackerr.New(errStr)
 	matches := []string{
 		errStr,
-		"^github.com/facebookgo/stackerr/stackerr_test.go:15 +TestNew$",
+		"stackerr_test.go:15 +TestNew$",
 	}
 	match(t, e.Error(), matches)
 }
@@ -26,7 +26,7 @@ func TestNewf(t *testing.T) {
 	e := stackerr.Newf(fmtStr, errStr)
 	matches := []string{
 		fmt.Sprintf(fmtStr, errStr),
-		"^github.com/facebookgo/stackerr/stackerr_test.go:26 +TestNewf$",
+		"stackerr_test.go:26 +TestNewf$",
 	}
 	match(t, e.Error(), matches)
 }
@@ -36,7 +36,7 @@ func TestWrap(t *testing.T) {
 	e := stackerr.Wrap(errors.New(errStr))
 	matches := []string{
 		errStr,
-		"^github.com/facebookgo/stackerr/stackerr_test.go:36 +TestWrap$",
+		"stackerr_test.go:36 +TestWrap$",
 	}
 	match(t, e.Error(), matches)
 }
