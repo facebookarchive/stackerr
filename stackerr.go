@@ -128,3 +128,12 @@ func HasUnderlying(e error, m Matcher) bool {
 	}
 	return false
 }
+
+// MatcherFunc allows using a function as a Matcher. For example to use
+// os.IsNotExist as a matcher.
+type MatcherFunc func(err error) bool
+
+// Match calls the underlying function.
+func (f MatcherFunc) Match(err error) bool {
+	return f(err)
+}
